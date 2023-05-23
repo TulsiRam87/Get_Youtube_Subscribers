@@ -2,18 +2,21 @@ const express = require('express');
 const path = require("path");
 const Subscriber = require("./src/models/subscribers");
 const app = express();
-//Schema import
-// const susbcriberSchema = require('../Youtube_Capstone/src/models/subscribers')
 
 app.use(express.json());
-//routes
-//api to render html file. || GET
+
+
+
+//Routing all api's here
+//When the server is loaded, an informatory page is shown to understand about the projet
+//GET req to get the html file.
 app.get("/",(req,res)=>{
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
 
-//api to get all data || METHOD GET
+//This api is getting all the data from mongodb by subscribers routes .
+//GET METHOD
 app.get("/subscribers",async(req,res)=>{
   try{
     let subscribers = await Subscriber.find();
@@ -24,7 +27,8 @@ app.get("/subscribers",async(req,res)=>{
 })
 
 
-//api to get all subscribers by name and subscribed channel || METHIOD GET
+// This api is only getting the subscribers name and Channel
+// GET METHOD
 app.get("/subscribers/names",async(req,res)=>{
   try{
     let subscribers = await Subscriber.find({}).select("name subscribedChannel");
@@ -35,7 +39,9 @@ app.get("/subscribers/names",async(req,res)=>{
 })
 
 
-//api to get subscribers by id || METHOD GET
+
+//This api is getting subscribers based on id provided in params
+//GET METHOD
 app.get("/subscribers/:id",async(req,res)=>{
   try{
     let subscribers = await Subscriber.findById(req.params.id);
@@ -45,21 +51,6 @@ app.get("/subscribers/:id",async(req,res)=>{
   }
 })
 
-// post
-// app.post("/subscribers",async(req,res)=>{
-//   try{
-//     // req.body['subscribedDate'] = new Date(req.body.subscribedDate);
-//     let subscribers = req.body;
-//     const data = new susbcriberSchema(subscribers);
-//     console.log(data)
-//     // let s = await data.save();
-//     let s = await data.insertMany(data);
-    
-//     res.status(200).send(s);
-//   }catch(error){
-//     res.status(500);
-//   }
-// })
 
 
 module.exports = app;
